@@ -1,8 +1,9 @@
 # Netskope-TGW-management - Failover automation solution for AWS TGW - Netskope IPsec tunnels
 
-The solution deploys Lambda function that's been triggered by the CloudWatch event rule for IPsec tunnel status change. When called by the CloudWatch event rule, the function checks if the both tunnel to the Netskope PoP are down, and if so, it scans all the TGW route tables for the static route pointing to the TGW VPN attachments for the corresponding Site-to-Site VPN connection, and replaces them with the alternative static route to the failover PoP.
+he solution deploys Lambda function that's been triggered by the CloudWatch event rule for IPsec tunnel status change. When called by the CloudWatch event rule, the function checks if the both tunnel to the Netskope PoP are down, and if so, it scans all the TGW route tables for the static route pointing to the TGW VPN attachments for the corresponding Site-to-Site VPN connection, and replaces them with the alternative static route to the failover PoP.
 
 You must deploy this solution in us-west-2 region and enable AWS Transit Gateway Network Manager. AWS Transit Gateway Network Manager is the global AWS service that monitors the status of IPsec Site-to-Site VPN connections and uses Amazon CloudWatch in the us-west-2 region for alerting and logging. This solution used AWS Transit Gateway events in the us-west-2 region to monitor your TGW in any region on the same account. Cross-account monitoring is not currently supported.
+
 You need to deploy one instance of the solution per TGW. You also can customize the lambda function to work with multiple TGWs or to treat a group of TGW attachments differently. 
 
 The solution assumes all TGW VPC attachments have the static route pointing to the same TGW VPN attachments. Therefore, all VPCs connected to this TGW will be utilizing the same IPsec tunnel between AWS TGW and Netskope PoP. The single tunnel bandwidth is limited to 250 Mbps. You may scale this solution by spliting your VPCs  to a number of groups and to route traffic for each group for its own redundant IPsec Site-to-Site VPN connections. The Lambda function can be customized to support this approach. 
@@ -12,7 +13,6 @@ You may enable of disable fallback functionality. If enabled, the Lambda functio
 In addition to checking and updating routes when IPsec tunnel status changes, the same Lambda function being triggered every 10 minutes to check that there are no routes left pointing to the IPsec connection which is currently down. This is to prevent the unlikely situation when IPsec connections were intensively bouncing, and the this caused a race condition between Lambda function executions which caused the last execution time out. Note, that only one Lambda function execution can run at any point of time to avoid inconsistent results. Concurrency has been controlled using DynamoDB table also being created by this solution.
 
 The CloudFormation stack creates the IAM role used by the Lambda function. This role implemented based on the least privilege access control model. To limit access to only TGW Attachments, therefore to the Route Tables that belong to this specific TGW, it uses IAM policy condition checking the Tags on the TGW Attachments. You must tag each of your TGW attachments with the tag "Key"="TGWName", "Value"="Your TGW Name". For example, "Key"="TGWName", "Value"="MyProdTGW-us-east-1".
-![image](https://user-images.githubusercontent.com/54648620/131035842-cb18ed79-5d06-49ea-955d-99a2215cc1d1.png)
 
 
 Usage: 
