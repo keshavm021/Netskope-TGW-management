@@ -28,21 +28,27 @@ If you're not going to modify the Lambda function, you can deploy the solution u
 6. Enter the stack name and the parameters for your deployment:
 
 TGWRegion
+
 The AWS region where your TGW is deployed
 
 TGWName
+
 TGW name that will be used for access control. Your all TGW attachments must have an attribute "Key"="TGWName", "Value"="This parameter". For example, "MyProdTGW-us-east-1"
 
 TGWID
+
 TGW ID. For example, tgw-01234567890123456
 
 TGWAttachmentID1
+
 TGW attachment ID for the first (primary) VPN. For example, tgw-attach-01234567890123456
 
 TGWAttachmentID2
+
 TGW attachment ID for the second (failover) VPN. For example, tgw-attach-01234567890123456
 
 Fallback
+
 Yes/No for the route fallback support to the TGWAttachmentID1 if both of this IPsec tunnels became active.
 
 8. Click Next.
