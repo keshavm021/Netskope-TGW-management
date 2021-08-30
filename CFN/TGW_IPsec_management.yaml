@@ -28,7 +28,7 @@ Parameters:
     Description: 'The AWS region where your TGW deployed'
     Type: String
   TGWID:
-    Default: "tgw-074979070791a0a71"
+    Default: ""
     Description: 'TGW ID. For example, tgw-01234567890123456'
     Type: String
   TGWName:
