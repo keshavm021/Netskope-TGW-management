@@ -1,6 +1,6 @@
 # Netskope-TGW-management - Failover automation solution for AWS TGW - Netskope IPsec tunnels
 
-he solution deploys Lambda function that's been triggered by the CloudWatch event rule for IPsec tunnel status change. When called by the CloudWatch event rule, the function checks if the both tunnel to the Netskope PoP are down, and if so, it scans all the TGW route tables for the static route pointing to the TGW VPN attachments for the corresponding Site-to-Site VPN connection, and replaces them with the alternative static route to the failover PoP.
+The solution deploys Lambda function that's been triggered by the CloudWatch event rule for IPsec tunnel status change. When called by the CloudWatch event rule, the function checks if the both tunnel to the Netskope PoP are down, and if so, it scans all the TGW route tables for the static route pointing to the TGW VPN attachments for the corresponding Site-to-Site VPN connection, and replaces them with the alternative static route to the failover PoP.
 
 You must deploy this solution in us-west-2 region and enable AWS Transit Gateway Network Manager. AWS Transit Gateway Network Manager is the global AWS service that monitors the status of IPsec Site-to-Site VPN connections and uses Amazon CloudWatch in the us-west-2 region for alerting and logging. This solution used AWS Transit Gateway events in the us-west-2 region to monitor your TGW in any region on the same account. Cross-account monitoring is not currently supported.
 
